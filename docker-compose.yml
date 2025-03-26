@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SOCKET_URL=http://localhost:3001
+    depends_on:
+      - socket
+    restart: always
+    networks:
+      - chat-network
+
+  socket:
+    build:
+      context: .
+      dockerfile: Dockerfile.socket
+    ports:
+      - "3001:3001"
+    restart: always
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge
